@@ -1,13 +1,12 @@
 import java.util.Scanner;
 
 public class GetMonsters {
-  double distance = 0.0;// 歩いた距離
+  double dt = 0.0;// 歩いた距離
   int balls = 5;// モンスターを捕まえられるボールの数
-  int superBalls = 5;
-
-  int hyperBalls = 5;
-  int peach = 5;
-  int cherry = 5;
+  int sub = 5;
+  int hyb = 5;
+  int p = 5;
+  int c = 5;
   Scanner sc = new Scanner(System.in);
 
   // 卵は最大9個まで持てる．卵を取得するとeggにtrueが代入され，
@@ -25,23 +24,23 @@ public class GetMonsters {
   double monsterRare[] = new double[22];
   String monsterTitle[] = new String[22];// 無し，超，絶，神の称号を保持する
 
-  int peachFlg = 0;
-  int cherryFlg = 0;
-  int ballFlg = 0;
-  int flg1 = 0;
-  int catchFlg = 0;
+  int pf = 0;
+  int cf = 0;
+  int bf = 0;
+  int f1 = 0;
+  int caf = 0;
 
   // 呼び出すと1km distanceが増える
   void move() {
-    this.distance++;
+    this.dt++;
     for (int i = 0; i < this.egg.length; i++) {// 卵は移動距離が進むと孵化するため，何km移動したかを更新する
       if (this.egg[i] == true) {
         this.eggDistance[i]++;
       }
     }
 
-    flg1 = (int) (Math.random() * 10 + 1);// 1,2の場合はMonStation，5以上の場合はモンスター
-    if (flg1 <= 2) {
+    f1 = (int) (Math.random() * 10 + 1);// 1,2の場合はMonStation，5以上の場合はモンスター
+    if (f1 <= 2) {
       System.out.println("Monstationを見つけた！");
       int b = (int) (Math.random() * 4);// ball,fruits,eggがランダムに出る
       int sb = (int) (Math.random() * 3);
@@ -57,10 +56,10 @@ public class GetMonsters {
           + "チェリーを" + c + "個，"
           + "卵を" + e + "個Getした！");
       this.balls = this.balls + b;
-      this.superBalls += sb;
-      this.hyperBalls += hb;
-      this.peach += p;
-      this.cherry += c;
+      this.sub += sb;
+      this.hyb += hb;
+      this.p += p;
+      this.c += c;
       // this.fruits = this.fruits + f;
       if (e >= 1) {// 卵を1つ以上Getしたら
         // egg[]に10個以上卵がない場合は新しい卵データをセットする
@@ -72,7 +71,7 @@ public class GetMonsters {
           }
         }
       }
-    } else if (flg1 >= 5) {
+    } else if (f1 >= 5) {
       int m = (int) (this.monsterZukan.length * Math.random());//
       // monsterZukanからランダムにモンスターを出す
 
@@ -82,32 +81,32 @@ public class GetMonsters {
 
         System.out.println("何を投げるか下記の数字から選択だ！(括弧内は現在の所持数)");
         System.out.println("1.モン玉(" + this.balls +
-            ")，2.スーパーモン玉(" + this.superBalls +
-            ")，3.ハイパーモン玉(" + this.hyperBalls +
-            ")，4.ピーチ(" + this.peach +
-            ")，5.チェリー(" + this.cherry + ")");
+            ")，2.スーパーモン玉(" + this.sub +
+            ")，3.ハイパーモン玉(" + this.hyb +
+            ")，4.ピーチ(" + this.p +
+            ")，5.チェリー(" + this.c + ")");
         int throwObject = sc.nextInt();// 何を投げたか
         if (throwObject == 4) {
-          if (this.peach <= 0) {
+          if (this.p <= 0) {
             System.out.println("もうピーチは存在しない");
             System.out.println("まごまごしているうちにモンスターは逃げてしまった");
             break;
           }
           System.out.println("ピーチを投げた．モンスターを捕まえたら2段階進化するぞ");
-          peachFlg = 1;
-          cherryFlg = 0;
-          this.peach--;
+          pf = 1;
+          cf = 0;
+          this.p--;
           continue;
         } else if (throwObject == 5) {
-          if (this.cherry <= 0) {
+          if (this.c <= 0) {
             System.out.println("もうチェリーは存在しない");
             System.out.println("まごまごしているうちにモンスターは逃げてしまった");
             break;
           }
           System.out.println("チェリーを投げた．モンスターを捕まえやすくなるぞ");
-          peachFlg = 0;
-          cherryFlg = 1;
-          this.cherry--;
+          pf = 0;
+          cf = 1;
+          this.c--;
           continue;
         } else if (throwObject == 1) {
           if (this.balls <= 0) {
@@ -117,18 +116,18 @@ public class GetMonsters {
           }
           System.out.println(this.monsterZukan[m] + "にモン玉を投げた．");
           int r = (int) (5 * Math.random());// 0~4までの数字をランダムに返す
-          if (cherryFlg == 1) {
+          if (cf == 1) {
             r = r + 2;
           }
           this.balls--;
           if (this.monsterRare[m] <= r) {// monsterRare[m]の値がr以下の場合
             System.out.println(this.monsterZukan[m] + "を捕まえた！");
-            cherryFlg = 0;
-            peachFlg = 0;
+            cf = 0;
+            pf = 0;
 
             for (int j = 0; j < userMonster.length; j++) {
               if (this.userMonster[j] == this.monsterZukan[m]) {
-                if (peachFlg == 1) {
+                if (pf == 1) {
                   if (this.monsterTitle[j] == null) {
                     this.monsterTitle[j] = "絶";
                     System.out
@@ -172,13 +171,13 @@ public class GetMonsters {
             break;
           } else {
             System.out.println("モンスターは逃げ出した");
-            cherryFlg = 0;
-            peachFlg = 0;
+            cf = 0;
+            pf = 0;
             break;
           }
 
         } else if (throwObject == 2) {
-          if (this.superBalls <= 0) {
+          if (this.sub <= 0) {
             System.out.println("もうスーパーモン玉は存在しない");
             System.out.println("まごまごしているうちにモンスターは逃げてしまった");
             break;
@@ -186,18 +185,18 @@ public class GetMonsters {
 
           System.out.println("スーパーモン玉を投げた．");
           int r = (int) (5 * Math.random() + 2);// 0~4までの数字をランダムに返す
-          if (cherryFlg == 1) {
+          if (cf == 1) {
             r = r + 2;
           }
-          this.superBalls--;
+          this.sub--;
           if (this.monsterRare[m] <= r) {// monsterRare[m]の値がr以下の場合
             System.out.println(this.monsterZukan[m] + "を捕まえた！");
-            cherryFlg = 0;
-            peachFlg = 0;
+            cf = 0;
+            pf = 0;
 
             for (int j = 0; j < userMonster.length; j++) {
               if (this.userMonster[j] == this.monsterZukan[m]) {
-                if (peachFlg == 1) {
+                if (pf == 1) {
                   if (this.monsterTitle[j] == null) {
                     this.monsterTitle[j] = "絶";
                     System.out
@@ -244,7 +243,7 @@ public class GetMonsters {
             continue;
           }
         } else if (throwObject == 3) {
-          if (this.hyperBalls <= 0) {
+          if (this.hyb <= 0) {
             System.out.println("もうハイパーモン玉は存在しない");
             System.out.println("まごまごしているうちにモンスターは逃げてしまった");
             break;
@@ -252,18 +251,18 @@ public class GetMonsters {
 
           System.out.println("ハイパーモン玉を投げた．");
           int r = (int) (5 * Math.random() + 3);// 0~4までの数字をランダムに返す
-          if (cherryFlg == 1) {
+          if (cf == 1) {
             r = r + 2;
           }
-          this.hyperBalls--;
+          this.hyb--;
           if (this.monsterRare[m] <= r) {// monsterRare[m]の値がr以下の場合
             System.out.println(this.monsterZukan[m] + "を捕まえた！");
-            cherryFlg = 0;
-            peachFlg = 0;
+            cf = 0;
+            pf = 0;
 
             for (int j = 0; j < userMonster.length; j++) {
               if (this.userMonster[j] == this.monsterZukan[m]) {
-                if (peachFlg == 1) {
+                if (pf == 1) {
                   if (this.monsterTitle[j] == null) {
                     this.monsterTitle[j] = "絶";
                     System.out
@@ -312,8 +311,8 @@ public class GetMonsters {
         } else {
           System.out.println("何も投げられなかった．．．モンスターは逃げ出した");
           throwObject = 0;
-          cherryFlg = 0;
-          peachFlg = 0;
+          cf = 0;
+          pf = 0;
 
           break;
         }
@@ -354,7 +353,7 @@ public class GetMonsters {
   }
 
   public double getDistance() {
-    return distance;
+    return dt;
   }
 
   public int getBalls() {
@@ -374,35 +373,35 @@ public class GetMonsters {
   }
 
   public int getSuperBalls() {
-    return superBalls;
+    return sub;
   }
 
   public void setSuperBalls(int superBalls) {
-    this.superBalls = superBalls;
+    this.sub = superBalls;
   }
 
   public int getHyperBalls() {
-    return hyperBalls;
+    return hyb;
   }
 
   public void setHyperBalls(int hyperBalls) {
-    this.hyperBalls = hyperBalls;
+    this.hyb = hyperBalls;
   }
 
   public int getPeach() {
-    return peach;
+    return p;
   }
 
   public void setPeach(int peach) {
-    this.peach = peach;
+    this.p = peach;
   }
 
   public int getCherry() {
-    return cherry;
+    return c;
   }
 
   public void setCherry(int cherry) {
-    this.cherry = cherry;
+    this.c = cherry;
   }
 
   public String[] getMonsterTitle() {
